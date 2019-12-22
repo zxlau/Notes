@@ -43,7 +43,7 @@
     "vue-router": "~2.8.1",
     "vuex": "~2.5.0",
     "wangeditor": "~3.1.1",
-    "ws": "2.3.1",
+    "ws": "7.2.1",
     "zipkin": "~0.10.1",
     "zipkin-context-cls": "~0.6.1",
     "zipkin-instrumentation-axios": "~0.1.0",
