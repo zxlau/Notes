@@ -9,3 +9,12 @@ git branch --set-upstream-to=origin/dev  // 设置默认提交或者拉取分支
 git branch --unset-upstream master  // 取消对master的跟踪
 
 ```
+
+#### git 拉取远程分支
+```
+git fetch origin 远程分支名x:本地分支名x
+
+git branch --set-upstream-to=origin/dev(远程分支名)
+
+git branch --unset-upstream master 
+```
