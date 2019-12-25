@@ -26,17 +26,6 @@ exec(`git diff --cached --name-only| grep -E ".(js|vue)$"`, (error, stdout) => {
         i--;
       }
     }
-    // array.filter(f => {
-    //   try {
-    //     fs.statSync(f);
-    //     return true;
-    //   } catch (error) {
-    //     console.log(array, array.indexOf(f));
-    //     // array.splice(array.indexOf(f), 1);
-    //     console.log(error);
-    //     return false;
-    //   }
-    // });
     const results = cli.executeOnFiles(array).results;
     let errorCount = 0;
     let warningCount = 0;
