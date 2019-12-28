@@ -18,3 +18,16 @@ git branch --set-upstream-to=origin/dev(远程分支名)
 
 git branch --unset-upstream master 
 ```
+
+#### 开发中常用
+```
+git add .
+
+git commit -m 'feat: update'
+
+git fetch
+
+git rebase
+
+git push
+```
