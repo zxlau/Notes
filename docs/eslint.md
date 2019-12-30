@@ -148,3 +148,78 @@ module.exports = {
 ```
 #### 3、 结合VScode
 
+安装 `VScode` 插件 `ESlint` 和 `Prettier`
+然后配置 `setting.json`
+```js
+"editor.tabSize": 2,
+"editor.detectIndentation": false, // 全部统一成2空格缩进
+"eslint.enable": true,  //是否开启vscode的eslint
+"editor.codeActionsOnSave": {
+	"source.fixAll.eslint": true
+},
+"eslint.options": {    //指定vscode的eslint所处理的文件的后缀
+"extensions": [
+	".js",
+  ".jsx",
+	".ts",
+	".tsx"
+]
+},
+"eslint.validate": [     //确定校验准则
+	"javascript",
+	"javascriptreact",
+	"html",
+	"typescript",
+	"typescriptreact"
+],
+```
+至此，重新启动 `VScode` 就能看到效果，`command + s` 保存文件的时候回自动修复代码。<br>
+
+未知原因：当代码行数超过一定数量时，估计在`500`行以上的文件，`command + s` 保存文件时会存在自动修复代码失效的情况，这个时候可以右键选择“格式化文档”来进行格式化，`1000`行或者更多的文件也有可能存在格式化失效的情况，原因暂时未知。
+
+#### 4、EditorConfig
+`EditorConfig` 可以帮助在不同的编辑器和 IDE 上从事同一项目的多个开发人员保持一致的编码样式。`EditorConfig` 项目包括一个用于定义编码样式的文件格式和一个文本编辑器插件集合，这些文本编辑器插件使编辑器可以读取文件格式并遵循定义的样式。
+```js
+root = true
+
+[*.{js,jsx,ts,tsx}]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+```
+#### 5、ts,tsx兼容老项目
+
+针对老项目中有 `.js` 和 `.jsx` 混合的文件，可以在根目录下新建 `.eslintignore` 配置如下：
+```
+**/*.js
+**/*.jsx
+```
+这样下来，`eslint` 就会忽略所有的 `.js` 和 `.jsx` 文件的校验。
+
+#### 6、使用 husky  lint-staged 来控制 git 提交之前的校验
+其中 `husky` 可以配置 `git` 提供的钩子，比如 `pre-commit  pre-push` 等。<br>
+`lint-staged` 是 `git add .`  之后“暂存” 状态的文件，也就是本次 `git` 提交的文件<br>
+安装依赖
+```
+npm i -D husky lint-staged
+```
+在 `package.json` 文件配置如下：
+```js
+ "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint"
+  }
+```
+这样配置好之后，在提交 `git` 的时候，修改的文件如果没有修复 `eslint` 的报错，就会无法提交。
+
+坑：`"*.{js,jsx,ts,tsx}": "eslint"`  这里的配置 `{js,jsx,ts,tsx}` 逗号后面不能空格，否则匹配不到文件,逗号后面不能空格，否则匹配不到文件,逗号后面不能空格，否则匹配不到文件!!!
+
+特殊办法： 可以在后面加 `--no-verify` 跳过验证
+
+
