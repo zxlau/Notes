@@ -35,4 +35,43 @@ export default InputWithUserName
 
 只需要定义一个非常简单的 `InputWithUserName`，它会把 `props.data` 作为 `<input />` 的 `value` 值。然把这个组件和 `username` 传给 `wrapWithLoadData`,`wrapWithLoadData` 会返回一个新的组件，我们用这个新的组件覆盖原来的 `InputWithUserName`,然后再导出去模块。
 
+**高阶组件的灵活性**<br>
+代码复用的方法、形式有很多种，你可以用类继承来做到代码复用，也可以分离模块的方式。但是高阶组件这种方式很有意思，也很灵活。学过设计模式的同学其实应该能反应过来，它其实就是设计模式里面的装饰者模式。它通过组合的方式达到很高的灵活程度。<br>
+假设现在我们需求变化了，现在要的是通过 `Ajax` 加载数据而不是从 `LocalStorage` 加载数据。我们只需要新建一个 `wrapWithAjaxData` 高阶组件：
+```js
+import React, { Component } from 'react'
 
+export default (WrappedComponent, name) => {
+  class NewComponent extends Component {
+    constructor () {
+      super()
+      this.state = { data: null }
+    }
+
+    componentWillMount () {
+      ajax.get('/data/' + name, (data) => {
+        this.setState({ data })
+      })
+    }
+
+    render () {
+      return <WrappedComponent data={this.state.data} />
+    }
+  }
+  return NewComponent
+}
+```
+其实就是改了一下 `wrapWithLoadData` 的 `componentWillMount` 中的逻辑，改成了从服务器加载数据。现在只需要把 `InputWithUserName` 稍微改一下：
+```js
+import wrapWithAjaxData from './wrapWithAjaxData'
+
+class InputWithUserName extends Component {
+  render () {
+    return <input value={this.props.data} />
+  }
+}
+
+InputWithUserName = wrapWithAjaxData(InputWithUserName, 'username')
+export default InputWithUserName
+```
+只要改一下包装的高阶组件就可以达到需要的效果。而且我们并没有改动 `InputWithUserName` 组件内部的任何逻辑，也没有改动 `Index` 的任何逻辑，只是改动了中间的高阶组件函数。
