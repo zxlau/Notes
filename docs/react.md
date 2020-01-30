@@ -78,6 +78,32 @@ export default InputWithUserName
 
 #### 多层高阶组件
 假如现在需求有变化了：我们需要先从 `LocalStorage` 中加载数据，再用这个数据去服务器取数据。我们改一下（或者新建一个）`wrapWithAjaxData` 高阶组件，修改其中的 `componentWillMount`
+```js
+componentWillMount () {
+  ajax.get('/data/' + this.props.data, (data) => {
+    this.setState({ data })
+  })
+}
+```
+它会用传进来的 `props.data` 去服务器取数据。这时候修改 `InputWithUserName`
+```js
+import wrapWithLoadData from './wrapWithLoadData'
+import wrapWithAjaxData from './wrapWithAjaxData'
+
+class InputWithUserName extends Component {
+  render () {
+    return <input value={this.props.data} />
+  }
+}
+
+InputWithUserName = wrapWithAjaxData(InputWithUserName)
+InputWithUserName = wrapWithLoadData(InputWithUserName, 'username')
+export default InputWithUserName
+```
+大家可以看到，我们给 `InputWithUserName` 应用了两种高阶组件：先用 `wrapWithAjaxData` 包裹 `InputWithUserName`，再用 `wrapWithLoadData` 包含上次包裹的结果<br>
+实际上最终得到的组件会先去 `LocalStorage` 取数据，然后通过 `props.data` 传给下一层组件，下一层用这个 `props.data` 通过 `Ajax` 去服务端取数据，然后再通过 `props.data` 把数据传给下一层，也就是 `InputWithUserName`
+
+
 
 
 
