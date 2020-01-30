@@ -75,3 +75,9 @@ InputWithUserName = wrapWithAjaxData(InputWithUserName, 'username')
 export default InputWithUserName
 ```
 只要改一下包装的高阶组件就可以达到需要的效果。而且我们并没有改动 `InputWithUserName` 组件内部的任何逻辑，也没有改动 `Index` 的任何逻辑，只是改动了中间的高阶组件函数。
+
+#### 多层高阶组件
+假如现在需求有变化了：我们需要先从 `LocalStorage` 中加载数据，再用这个数据去服务器取数据。我们改一下（或者新建一个）`wrapWithAjaxData` 高阶组件，修改其中的 `componentWillMount`
+
+
+
