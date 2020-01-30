@@ -103,7 +103,17 @@ export default InputWithUserName
 大家可以看到，我们给 `InputWithUserName` 应用了两种高阶组件：先用 `wrapWithAjaxData` 包裹 `InputWithUserName`，再用 `wrapWithLoadData` 包含上次包裹的结果<br>
 实际上最终得到的组件会先去 `LocalStorage` 取数据，然后通过 `props.data` 传给下一层组件，下一层用这个 `props.data` 通过 `Ajax` 去服务端取数据，然后再通过 `props.data` 把数据传给下一层，也就是 `InputWithUserName`
 
+#### 动手实现 `Redux`（一）：优雅地修改共享状态
+`Redux` 和 `React-redux` 并不是同一个东西。`Redux` 是一种架构模式（`Flux` 架构的一种变种），它不关注你到底用什么库，你可以把它应用到 `React` 和 `Vue`，甚至跟 `jQuery` 结合都没有问题。而 `React-redux` 就是把 `Redux` 这种架构模式和 `React.js` 结合起来的一个库，就是 `Redux` 架构在 `React.js` 中的体现.
 
+现在让我们忘掉 `React.js、Redux` 这些词，从一个例子的代码 + 问题开始推演。
 
+用 `create-react-app` 新建一个项目 `make-redux`，修改 `public/index.html` 里面的 `body` 结构为：
+```html
+ <body>
+    <div id='title'></div>
+    <div id='content'></div>
+  </body>
+```
 
 
