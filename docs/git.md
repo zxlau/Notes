@@ -19,6 +19,16 @@ git branch --set-upstream-to=origin/dev(远程分支名)
 git branch --unset-upstream master 
 ```
 
+#### git 本地项目关联远程仓库
+
+```
+git init
+
+git remote add origin xx/xx/xx.git  (git 地址)
+
+git push -u origin master
+```
+
 #### 开发中常用
 ```
 git add .
